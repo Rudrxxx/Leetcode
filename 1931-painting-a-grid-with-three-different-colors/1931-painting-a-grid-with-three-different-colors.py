@@ -6,7 +6,6 @@ class Solution:
                 if st[i]==st[i-1]:
                     return False
             return True
-            
         colors=[0,1,2]
         validst=[]
         for i in product(colors,repeat=m):
