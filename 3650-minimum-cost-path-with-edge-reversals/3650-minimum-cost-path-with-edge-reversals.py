@@ -8,18 +8,16 @@ class Solution:
 
         # build graph
         for u, v, w in edges:
-            graph[u].append((v, w))        # normal direction
-            graph[v].append((u, 2 * w))    # reversed direction
-
+            graph[u].append((v, w))   
+            graph[v].append((u, 2 * w))
         dist = [float('inf')] * n
         dist[0] = 0
 
-        pq = [(0, 0)]  # (cost, node)
+        pq = [(0, 0)] 
 
         while pq:
             cost, u = heapq.heappop(pq)
 
-            # stale entry
             if cost > dist[u]:
                 continue
 
