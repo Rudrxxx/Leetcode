@@ -1,20 +1,35 @@
+from collections import defaultdict
+import heapq
+from typing import List
+
 class Solution:
     def minCost(self, n: int, edges: List[List[int]]) -> int:
-        graph = [[] for _ in range(n)]
+        graph = defaultdict(list)
+
+        # build graph
         for u, v, w in edges:
-            graph[u].append((v, w))
-            graph[v].append((u, 2 * w))
-        min_time = [inf] * n
-        min_time[0] = 0
-        heap = [(0, 0)] 
-        while heap:
-            curr_time, node = heappop(heap)
-            if node == n-1:
-                return curr_time
-            if curr_time == min_time[node]:
-                for neighbor, w in graph[node]:
-                    new_time = curr_time + w
-                    if min_time[neighbor] > new_time:
-                        min_time[neighbor] = new_time
-                        heappush(heap, (new_time, neighbor))
-        return -1  
+            graph[u].append((v, w))        # normal direction
+            graph[v].append((u, 2 * w))    # reversed direction
+
+        dist = [float('inf')] * n
+        dist[0] = 0
+
+        pq = [(0, 0)]  # (cost, node)
+
+        while pq:
+            cost, u = heapq.heappop(pq)
+
+            # stale entry
+            if cost > dist[u]:
+                continue
+
+            if u == n - 1:
+                return cost
+
+            for v, w in graph[u]:
+                new_cost = cost + w
+                if new_cost < dist[v]:
+                    dist[v] = new_cost
+                    heapq.heappush(pq, (new_cost, v))
+
+        return -1
