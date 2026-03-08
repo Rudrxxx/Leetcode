@@ -1,4 +1,3 @@
-# Added using AI
 class Solution:
     def findDifferentBinaryString(self, nums: List[str]) -> str:
         n = len(nums)
